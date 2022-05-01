@@ -1,1 +1,5 @@
 Django==4.0.4
+ipython
+Pillow
+django-extensions
+psycopg==3.0.12
