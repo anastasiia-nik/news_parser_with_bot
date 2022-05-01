@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-3&7(i_a5)1r^7%m5@qw=45^8((jyx3r5r2c!zn8w10m5(q)8=0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['django.py-beetroot.ml']
 
 
 # Application definition
