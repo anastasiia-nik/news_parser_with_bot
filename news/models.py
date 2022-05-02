@@ -30,3 +30,5 @@ class News(models.Model):
         return f'{self.title}: {self.text}'
 
 # Create your models here.
+class Model:
+    pass
