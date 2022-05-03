@@ -24,3 +24,10 @@ def category(request, cat_name=None):
         raise Http404("Category does not exist")
     return render(request, 'category.html', context=context)
 
+def show_article(request, article_name=None):
+    try:
+        n = News.objects.get(title=article_name)
+        context = {'article': n}
+    except News.DoesNotExist:
+        raise Http404("Article does not exist")
+    return render(request, 'new_view.html', context=context)

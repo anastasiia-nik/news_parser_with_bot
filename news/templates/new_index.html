@@ -5,7 +5,7 @@
         <div class="col-md-6 px-0">
           <h1 class="display-4 font-italic">{{ news_list.0.title }}</h1>
           <p class="lead my-3">{{ news_list.0.text|truncatechars:200 }}</p>
-          <p class="lead mb-0"><a href="#" class="text-white font-weight-bold">Continue reading...</a></p>
+          <p class="lead mb-0"><a href="{% url 'article_name' news_list.0.title %}" class="text-white font-weight-bold">Continue reading...</a></p>
         </div>
     </div>
 
@@ -22,9 +22,11 @@
               <div class="mb-1 text-muted">{{ new.date }}</div>
                 {% endif %}
               <p class="card-text mb-auto">{{ new.text|truncatechars:200 }}</p>
-              <a href="#">Continue reading</a>
+              <a href="{% url 'article_name' new.title %}">Continue reading</a>
             </div>
-            <img class="card-img-right flex-auto d-none d-md-block" src="{{ MEDIA_URL }}{{ new.image }}" alt="Card image cap">
+                {% if new.image %}
+            <img class="card-img-right flex-auto d-none d-md-block" src="media/{{ new.image }}" alt="Card image cap">
+                {% endif %}
           </div>
         </div>
         {%  endfor %}
