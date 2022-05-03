@@ -9,6 +9,10 @@ class Author(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
 
+    @property
+    def has_news(self) -> bool:
+        return News.objects.filter(category=self).exists()
+
     def __str__(self):
         return self.name
 

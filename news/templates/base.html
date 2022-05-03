@@ -46,7 +46,9 @@
         <nav class="nav d-flex">
             <a class="p-2 text-muted" href="{% url 'home' %}">All</a>
             {% for category in categories_list %}
+                {% if category.has_news %}
                 <a class="p-2 text-muted" href="{% url 'category_name' category.name %}">{{ category.name }}</a>
+                {% endif %}
             {% endfor %}
 
         </nav>
