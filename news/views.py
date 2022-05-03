@@ -5,8 +5,8 @@ from news.models import Category, News
 
 # Create your views here.
 def main_page(request):
-    news_list = News.objects.order_by('-id').all()
-    context = {'news_list': news_list}
+    news_list = News.objects.all().order_by('-id')
+    context = {'news_list': news_list, 'top_news': news_list.first()}
     return render(request, 'new_index.html', context=context)
 
 # def news_page(request):
