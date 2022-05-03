@@ -27,7 +27,7 @@ class News(models.Model):
     date = models.DateTimeField(blank=True, null=True)
     text = models.TextField()
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
-    author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, null=True, blank=True)
     tags = models.ManyToManyField(Tags, blank=True)
     image = models.ImageField(upload_to='news/images/', blank=True, null=True)
 
