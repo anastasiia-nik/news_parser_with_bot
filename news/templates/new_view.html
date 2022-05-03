@@ -12,8 +12,10 @@
               </h3>
                 {% if article.date %}
               <div class="mb-1 text-muted">{{ article.date }}</div>
-                    <div class="mb-1 text-muted">{{ new.date }}</div>
                 {% endif %}
+            {% if article.author %}
+            <div class="mb-1 text-muted">{{ article.author }}</div>
+            {% endif %}
               <p class="card-text mb-auto">{{ article.text }}</p>
             </div>
                 {% if article.image %}
