@@ -23,7 +23,7 @@ class News():
 
 class Upravda():
 
-    def init(self):
+    def __init__(self):
         self.list_all_news_links = []
         self.all_news = []
 
