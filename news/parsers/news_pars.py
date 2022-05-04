@@ -36,7 +36,7 @@ class Upravda():
         for news in news_on_page:
             temp_link = news.find('a').attrs['href']
             if 'https' not in temp_link:
-                news_list.append('https://www.pravda.com.ua/' + temp_link)
+                news_list.append('https://www.pravda.com.ua' + temp_link)
         self.list_all_news_links = news_list
 
     def convert_data(self, data: str):
