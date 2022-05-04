@@ -24,10 +24,24 @@ class Upravda(NewsParser):
 
     @staticmethod
     def parse(link):
-        title - h1
-        author - post_author.text
-        data - post time
-        photo post_photo_news_img scr
+        news_info = {}
+        # title - h1
+        # author - post_author.text
+        # data - post time
+        # photo post_photo_news_img scr
+        # tags - post_tags_item
+        resp = requests.get(link)
+        bs = BeautifulSoup(resp.text, 'lxml')
+        news_title = bs.find('h1')
+        news_author = bs.find('div', class_='post_author').text
+        news_data = bs.find('div', class_='post time').text
+        news_photo = bs.find('div', class_='post_photo_news_img').find('img').attrs['scr']
+        news_tags = bs.find_all('div', class_='post_tags_item').text
+
+
+
+
+
 
 
 
