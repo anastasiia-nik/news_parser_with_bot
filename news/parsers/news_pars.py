@@ -8,7 +8,7 @@ import requests
 # from base import NewsParser
 from bs4 import BeautifulSoup
 
-BASE_URL = 'https://www.pravda.com.ua/news/'
+BASE_URL = 'https://www.pravda.com.ua/news'
 
 
 @dataclass
