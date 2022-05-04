@@ -8,7 +8,7 @@ import requests
 # from base import NewsParser
 from bs4 import BeautifulSoup
 
-BASE_URL = 'https://www.pravda.com.ua/news/'
+BASE_URL = 'https://www.pravda.com.ua/news'
 
 
 @dataclass
@@ -23,7 +23,7 @@ class News():
 
 class Upravda():
 
-    def init(self):
+    def __init__(self):
         self.list_all_news_links = []
         self.all_news = []
 
@@ -36,7 +36,7 @@ class Upravda():
         for news in news_on_page:
             temp_link = news.find('a').attrs['href']
             if 'https' not in temp_link:
-                news_list.append('https://www.pravda.com.ua/' + temp_link)
+                news_list.append('https://www.pravda.com.ua' + temp_link)
         self.list_all_news_links = news_list
 
     def convert_data(self, data: str):
