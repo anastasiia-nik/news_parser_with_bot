@@ -6,3 +6,7 @@ psycopg2-binary
 gunicorn
 pyTelegramBotAPI==4.5.0
 python-dotenv
+requests==2.27.1
+bs4==0.0.1
+lxml==4.8.0
+newsapi-python
