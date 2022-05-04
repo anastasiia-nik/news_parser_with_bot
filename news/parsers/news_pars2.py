@@ -1,3 +1,4 @@
+import json
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
 # from time import strptime, strftime
@@ -70,7 +71,11 @@ class Upravda():
         resp = requests.get(link)
         bs = BeautifulSoup(resp.text, 'lxml')
         news_title = bs.find('h1').text
-        news_author = bs.find('span', class_='post_author').text.strip(' — ')
+        try:
+            news_author = bs.find('span', class_='post_author').text.strip(' — ')
+        except:
+            news_author=''
+            print(link)
         news_data = self.convert_data(bs.find('div', class_='post_time').text.split(' — ')[-1])
         news_text = bs.find('div', class_='post_text').text
         try:
@@ -88,8 +93,9 @@ class Upravda():
                         news_photo=news_photo,
                         news_tags=news_tags)
         # print(one_news)
-        self.all_news.append(one_news)
-        print(self.all_news[-1])
+        # self.all_news.append(one_news)
+        # print(self.all_news[-1])
+        return one_news
 
     def parse_all(self):
         self.collect_all_news()
@@ -136,10 +142,18 @@ class Upravda():
             for page in links:
                 threads.append(executor.submit(parser, page))
             for page in as_completed(threads):
-                elements += page.result()
+                # print(page.result())
+                elements.append(page.result())
         # print(elements)
-        # return elements
-        self.all_news = elements
+        return elements
+        # self.all_news = elements
+
+    def to_json(self):
+        general_list = []
+        for item in self.all_news:
+            general_list.append(item.__dict__)
+        with open('news_test.json', 'w') as file:
+            json.dump(general_list, file, indent=4, ensure_ascii=False, default=str)
 
 temp = Upravda()
 temp.collect_all_news()
@@ -147,9 +161,9 @@ temp.collect_all_news()
 # print(temp.list_all_news_links)
 
 temp.parse_all()
-
+temp.to_json()
 # print(temp.all_news)
 
 print(len(temp.list_all_news_links))
-# print(len(temp.all_news))
+print(len(temp.all_news))
 print(temp.all_news[-1])
