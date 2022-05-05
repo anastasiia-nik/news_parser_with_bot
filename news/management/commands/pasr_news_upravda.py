@@ -43,14 +43,14 @@ class Command(BaseCommand):
         for news in parser.all_news:
             news_list.append(news.news_title)
         news_set = set(news_list)
-        news_from_db = nm.Tags.objects.all()
+        news_from_db = nm.News.objects.all()
         # tags_list_from_db = []
         news_set_from_db = set(news.title for news in news_from_db)
         unique_news = news_set - news_set_from_db
         tags_from_db = nm.Tags.objects.all()
         authors_from_db = nm.Author.objects.all()
         for news in parser.all_news:
-            if news.title in unique_news:
+            if news.news_title in unique_news:
                 author_current = authors_from_db.get(name=news.news_author)
                 try:
                     category_current = nm.Category.objects.get(name='upravda')
@@ -65,7 +65,7 @@ class Command(BaseCommand):
                                                      author=author_current,
                                                      category=category_current,
                                                      image=news.news_photo)
-                news_object.tags.add(tags_current_ids)
+                news_object.tags.add(*tags_current_ids)
                 news_object.save()
 
 

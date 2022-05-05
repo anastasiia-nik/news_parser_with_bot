@@ -41,7 +41,7 @@ class Upravda():
         self.list_all_news_links = news_list
 
     def convert_data(self, data: str):
-        dict_month = {'січеня': 1,
+        dict_month = {'січня': 1,
                       'лютого': 2,
                       'березня': 3,
                       'квітня': 4,
@@ -155,15 +155,15 @@ class Upravda():
         with open('news_test.json', 'w') as file:
             json.dump(general_list, file, indent=4, ensure_ascii=False, default=str)
 
-temp = Upravda()
-temp.collect_all_news()
-
-# print(temp.list_all_news_links)
-
-temp.parse_all()
-temp.to_json()
-# print(temp.all_news)
-
-print(len(temp.list_all_news_links))
-print(len(temp.all_news))
-print(temp.all_news[-1])
+# temp = Upravda()
+# temp.collect_all_news()
+#
+# # print(temp.list_all_news_links)
+#
+# temp.parse_all()
+# temp.to_json()
+# # print(temp.all_news)
+#
+# print(len(temp.list_all_news_links))
+# print(len(temp.all_news))
+# print(temp.all_news[-1])
