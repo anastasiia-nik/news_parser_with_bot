@@ -13,7 +13,7 @@ BASE_URL = 'https://www.pravda.com.ua/news/'
 
 
 @dataclass
-class News():
+class NewsExternal():
     news_title: str
     news_author: str
     news_data: datetime
@@ -74,7 +74,7 @@ class Upravda():
         try:
             news_author = bs.find('span', class_='post_author').text.strip(' — ')
         except:
-            news_author=''
+            news_author='Anonimus'
             print(link)
         news_data = self.convert_data(bs.find('div', class_='post_time').text.split(' — ')[-1])
         news_text = bs.find('div', class_='post_text').text
@@ -86,12 +86,12 @@ class Upravda():
         news_tags = []
         for tag in news_tags_set:
             news_tags.append(tag.text)
-        one_news = News(news_title=news_title,
-                        news_author=news_author,
-                        news_data=news_data,
-                        news_text=news_text,
-                        news_photo=news_photo,
-                        news_tags=news_tags)
+        one_news = NewsExternal(news_title=news_title,
+                                news_author=news_author,
+                                news_data=news_data,
+                                news_text=news_text,
+                                news_photo=news_photo,
+                                news_tags=news_tags)
         # print(one_news)
         # self.all_news.append(one_news)
         # print(self.all_news[-1])

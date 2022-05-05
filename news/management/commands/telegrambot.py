@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from dotenv import load_dotenv
 
+
 from news.models import Category
 
 import os
