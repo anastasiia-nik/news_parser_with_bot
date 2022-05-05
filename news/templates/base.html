@@ -52,8 +52,8 @@
         <nav class="nav d-flex">
             <a class="p-2 text-muted" href="{% url 'home' %}">All</a>
             {% for tag in tags_list %}
-                {% if tag.has_news %}
-                    <a class="p-2 text-muted" href="{% url 'tag_name' tag.tag %}">{{ tag.tag }}</a>
+                {% if tag.0.has_news %}
+                    <a class="p-2 text-muted" href="{% url 'tag_name' tag.0.tag %}">{{ tag.0.tag }} - {{ tag.1 }}</a>
                 {% endif %}
             {% endfor %}
 

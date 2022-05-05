@@ -23,6 +23,10 @@ class Tags(models.Model):
     def has_news(self) -> bool:
         return News.objects.filter(tags=self).exists()
 
+    @property
+    def counter(self):
+        return News.objects.filter(tags=self).count()
+
     def __str__(self):
         return self.tag
 
