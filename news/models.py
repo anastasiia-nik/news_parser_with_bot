@@ -45,3 +45,8 @@ class News(models.Model):
 
     def __str__(self):
         return f'{self.title}'
+
+
+class Subscribers(models.Model):
+    email = models.EmailField(unique=True)
+    last_news_id = models.IntegerField(default=0)

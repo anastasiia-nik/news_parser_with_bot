@@ -1,7 +1,33 @@
 from django.http import Http404
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 
-from news.models import Category, News, Tags
+from news.forms import SubscribeForm, ContactForm
+from news.models import Category, News, Tags, Subscribers
+
+
+@csrf_exempt
+def subscribe(request):
+    news_list = News.objects.all().order_by('-id')
+    if 'q' in request.GET:
+        news_list = news_list.filter(title__icontains=request.GET['q'])
+
+
+    form = SubscribeForm()
+    f2 = ContactForm()
+    if request.method == 'POST':
+        form = SubscribeForm(data=request.POST)
+        if form.is_valid():
+            instance = form.save(False)
+            last_id = 0
+            if News.objects.all().exists():
+                last_id = News.objects.order_by('-id').first().id
+            instance.last_news_id = last_id
+            instance.save()
+
+
+    context = {'news_list': news_list, 'top_news': news_list.first(), 'subscribe_form': form, 'contact_form': f2}
+    return render(request, 'new_index.html', context=context)
 
 # Create your views here.
 def main_page(request):
