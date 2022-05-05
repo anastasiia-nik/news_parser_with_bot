@@ -16,8 +16,10 @@
                         <p class="card-text mb-auto">{{ new.text|truncatechars:200 }}</p>
                         <a href="#">Continue reading</a>
                     </div>
-                    <img class="card-img-right flex-auto d-none d-md-block" src="{{ new.image }}" alt="Card image cap">
-
+                    {% if new.image %}
+                        <img class="card-img-right flex-auto d-none d-md-block" src="{{ new.image }}"
+                             alt="Card image cap">
+                    {% endif %}
                     {#                <img class="card-img-right flex-auto d-none d-md-block" data-src="holder.js/200x250?theme=thumb" alt="Card image cap">#}
                 </div>
             </div>
