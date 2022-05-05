@@ -1,7 +1,7 @@
 from django.http import Http404
 from django.shortcuts import render
 
-from news.models import Category, News
+from news.models import Category, News, Tags
 
 # Create your views here.
 def main_page(request):
@@ -31,3 +31,14 @@ def show_article(request, article_name=None):
     except News.DoesNotExist:
         raise Http404("Article does not exist")
     return render(request, 'new_view.html', context=context)
+
+
+
+def tag(request, tag_name=None):
+    try:
+        t = Tags.objects.get(tag=tag_name)
+        news_in_tag = News.objects.filter(tags=t)
+        context = {'news_in_tag': news_in_tag}
+    except Tags.DoesNotExist:
+        raise Http404("Tag does not exist")
+    return render(request, 'tag.html', context=context)
