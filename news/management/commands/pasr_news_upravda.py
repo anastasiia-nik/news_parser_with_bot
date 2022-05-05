@@ -8,65 +8,30 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         upravda = pu.Upravda()
         upravda.parse_all()
-        self.add_authors(upravda)
         self.add_tags(upravda)
         self.add_news(upravda)
 
     def add_authors(self, parser: pu.Upravda):
-        authors_list = []
-        for news in parser.all_news:
-            authors_list.append(news.news_author)
-        authors_set = set(authors_list)
-        authors_from_db = nm.Author.objects.all()
-        authors_list_from_db = []
-        # for author in authors_from_db:
-        #     authors_list_from_db.append(author)
-        # authors_set_from_db = set(authors_list_from_db)
-        authors_set_from_db = set(author.name for author in authors_from_db)
-        unique_authors = authors_set - authors_set_from_db
-        for author in unique_authors:
-            nm.Author.objects.create(name=author)
+        nm.Author.objects.bulk_create([nm.Author(name=news.news_author) for news in parser.all_news],
+                                      ignore_conflicts=True)
 
     def add_tags(self, parser: pu.Upravda):
-        tags_list = []
+        tags = set()
         for news in parser.all_news:
-            tags_list += news.news_tags
-        tags_set = set(tags_list)
-        tags_from_db = nm.Tags.objects.all()
-        tags_set_from_db = set(tag.tag for tag in tags_from_db)
-        unique_tags = tags_set - tags_set_from_db
-        for tag in unique_tags:
-            nm.Tags.objects.create(tag=tag)
+            tags.update(set(news.news_tags))
+        nm.Tags.objects.bulk_create([nm.Tags(tag=tag) for tag in tags], ignore_conflicts=True)
 
     def add_news(self, parser: pu.Upravda):
-        news_list = []
         for news in parser.all_news:
-            news_list.append(news.news_title)
-        news_set = set(news_list)
-        news_from_db = nm.News.objects.all()
-        # tags_list_from_db = []
-        news_set_from_db = set(news.title for news in news_from_db)
-        unique_news = news_set - news_set_from_db
-        tags_from_db = nm.Tags.objects.all()
-        authors_from_db = nm.Author.objects.all()
-        for news in parser.all_news:
-            if news.news_title in unique_news:
-                author_current = authors_from_db.get(name=news.news_author)
-                try:
-                    category_current = nm.Category.objects.get(name='upravda')
-                except:
-                    category_current = nm.Category.objects.create(name='upravda')
-                tags_current_ids = []
-                for tag in news.news_tags:
-                    tags_current_ids.append(tags_from_db.get(tag=tag).id)
-                news_object = nm.News.objects.create(title=news.news_title,
-                                                     date=news.news_data,
-                                                     text=news.news_text,
-                                                     author=author_current,
-                                                     category=category_current,
-                                                     image=news.news_photo)
-                news_object.tags.add(*tags_current_ids)
-                news_object.save()
+            author_current, _ = nm.Author.objects.get_or_create(name=news.news_author,)
+            category_current, _ = nm.Category.objects.get_or_create(name='upravda')
+            news_tags = nm.Tags.objects.filter(tag__in=news.news_tags)
+            news, _ = nm.News.objects.get_or_create(
+                title=news.news_title, defaults={'date': news.news_data, 'text': news.news_text,
+                                                 'author': author_current, 'category': category_current,
+                                                 'image': news.news_photo})
+            news.tags.clear()
+            news.tags.add(*news_tags)
 
 
     # news_title: str

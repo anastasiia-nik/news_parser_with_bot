@@ -1,10 +1,12 @@
 from django.db import models
 
+
 class Author(models.Model):
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, unique=True)
 
     def __str__(self):
         return self.name
+
 
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -15,6 +17,7 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class Tags(models.Model):
     tag = models.CharField(max_length=100, unique=True)
@@ -30,6 +33,7 @@ class Tags(models.Model):
     def __str__(self):
         return self.tag
 
+
 class News(models.Model):
     title = models.CharField(max_length=500)
     date = models.DateTimeField(blank=True, null=True)
@@ -40,8 +44,4 @@ class News(models.Model):
     image = models.ImageField(upload_to='news/images/', blank=True, null=True)
 
     def __str__(self):
-        return f'{self.title}: {self.text}'
-
-# Create your models here.
-class Model:
-    pass
+        return f'{self.title}'

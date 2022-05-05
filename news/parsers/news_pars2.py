@@ -1,6 +1,5 @@
 import json
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from dataclasses import dataclass
 # from time import strptime, strftime
 from datetime import datetime
 
@@ -9,20 +8,11 @@ import requests
 # from base import NewsParser
 from bs4 import BeautifulSoup
 
-BASE_URL = 'https://www.pravda.com.ua/news/'
-
-
-@dataclass
-class NewsExternal():
-    news_title: str
-    news_author: str
-    news_data: datetime
-    news_text: str
-    news_photo: str
-    news_tags: [str]
+from news.parsers.base import NewsExternal
 
 
 class Upravda():
+    BASE_URL = 'https://www.pravda.com.ua/news/'
 
     def __init__(self):
         self.list_all_news_links = []
@@ -30,7 +20,7 @@ class Upravda():
 
     # @staticmethod
     def collect_all_news(self):
-        resp = requests.get(BASE_URL)
+        resp = requests.get(self.BASE_URL)
         bs = BeautifulSoup(resp.text, 'lxml')
         news_on_page = bs.find_all('div', class_='article_news_list')
         news_list = []
@@ -73,8 +63,8 @@ class Upravda():
         news_title = bs.find('h1').text
         try:
             news_author = bs.find('span', class_='post_author').text.strip(' — ')
-        except:
-            news_author='Anonimus'
+        except AttributeError:
+            news_author = 'Anonimus'
             print(link)
         news_data = self.convert_data(bs.find('div', class_='post_time').text.split(' — ')[-1])
         news_text = bs.find('div', class_='post_text').text
@@ -103,7 +93,7 @@ class Upravda():
         # for link in self.list_all_news_links:
         #     self.parse_one(link=link)
         # self.parse_one(self.list_all_news_links[0])
-        self.all_news = self.grabber(self.list_all_news_links,self.parse_one)
+        self.all_news = self.grabber(self.list_all_news_links, self.parse_one)
 
     # # temp = Upravda()
     # # temp.collect_all_news()
