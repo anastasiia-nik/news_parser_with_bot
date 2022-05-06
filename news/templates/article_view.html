@@ -19,8 +19,7 @@
                     <p class="card-text mb-auto">{{ article.text }}</p>
                 </div>
                 {% if article.image %}
-                    <img class="card-img-right flex-auto d-none d-md-block" src="media/{{ article.image }}"
-                         alt="Card image cap">
+                    <img class="card-img-right flex-auto d-none d-md-block" src="{{ article.image }}" alt="Card image cap">
                 {% endif %}
             </div>
 
