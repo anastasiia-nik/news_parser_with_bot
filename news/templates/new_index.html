@@ -17,7 +17,7 @@
         <div class="col-md-12">
           <div class="card flex-md-row mb-4 box-shadow h-md-250">
             <div class="card-body d-flex flex-column align-items-start">
-              <strong class="d-inline-block mb-2 text-primary">{{ new.category }}</strong>
+              <strong class="d-inline-block mb-2 text-primary">{% for tag in new.tags.all %}#{{ tag }} {% endfor %}</strong>
               <h3 class="mb-0">
                 <a class="text-dark" href="{% url 'article_name' new.title %}">{{ new.title }}</a>
               </h3>
@@ -25,7 +25,8 @@
               <div class="mb-1 text-muted">{{ new.date }}</div>
                 {% endif %}
               <p class="card-text mb-auto">{{ new.text|truncatechars:200 }}</p>
-              <a href="{% url 'article_name' new.title %}">Continue reading</a>
+              <a href="{% url 'article_name' new.title %}">Читати далi</a>
+              <p>{{ new.comments.count }} комментарiв</p>
             </div>
                 {% if new.image %}
 {#            <img class="card-img-right flex-auto d-none d-md-block" src="media/{{ new.image }}" alt="Card image cap">#}
