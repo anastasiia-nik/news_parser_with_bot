@@ -9,11 +9,11 @@ class SampleForm(forms.Form):
     text = forms.CharField(max_length=100)
 
 class CommentForm(forms.ModelForm):
-    captcha = ReCaptchaField()
+    captcha = ReCaptchaField(widget=ReCaptchaV3)
     class Meta:
         model = Comment
         fields = ('author', 'text')
         # exclude = ['date', 'news_id', 'approved']
-        captcha = ReCaptchaField()
+        # captcha = ReCaptchaField()
 
 
