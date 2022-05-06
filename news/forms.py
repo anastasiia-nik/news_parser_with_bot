@@ -1,11 +1,11 @@
 from django import forms
 
-from news.models import Comment
+from .models import Comment
 
 
 class CommentForm(forms.ModelForm):
-    class Meta():
+    class Meta:
         model = Comment
-        # field = ['author', 'text']
-        exclude = ['date', 'news_id', 'approved']
+        fields = ('author', 'text')
+        # exclude = ['date', 'news_id', 'approved']
 
