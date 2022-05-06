@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django.db import models
+from django.core.validators import MinLengthValidator
 
 
 class Author(models.Model):
@@ -51,7 +52,7 @@ class News(models.Model):
 
 
 class Comment(models.Model):
-    author = models.CharField(max_length=150)
+    author = models.CharField(max_length=150, validators=[MinLengthValidator(2)])
     text = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
     news_id = models.ForeignKey(News, on_delete=models.CASCADE, related_name='comments')
