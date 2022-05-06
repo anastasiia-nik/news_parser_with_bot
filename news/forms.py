@@ -10,6 +10,6 @@ class CommentForm(forms.ModelForm):
         model = Comment
         fields = ('author', 'text')
         # exclude = ['date', 'news_id', 'approved']
-        captcha = ReCaptchaField(widget=ReCaptchaV3)
+        captcha = ReCaptchaField()
 
 
