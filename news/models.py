@@ -50,6 +50,11 @@ class News(models.Model):
     def __str__(self):
         return f'{self.title}'
 
+    @property
+    def comment_counter(self):
+        one_news = News.objects.get(id=self.id)
+        return one_news.comments.filter(approved=True).count()
+
 
 class Comment(models.Model):
     author = models.CharField(max_length=150, validators=[MinLengthValidator(2)])
@@ -63,3 +68,5 @@ class Comment(models.Model):
 
     def __str__(self):
         return 'Comment {} by {}'.format(self.text, self.author)
+
+

@@ -26,7 +26,7 @@
                 {% endif %}
               <p class="card-text mb-auto">{{ new.text|truncatechars:200 }}</p>
               <a href="{% url 'article_name' new.title %}">Читати далi</a>
-              <p>{{ new.comments.count }} комментарiв</p>
+              <p>{{ new.comment_counter }} комментарiв</p>
             </div>
                 {% if new.image %}
 {#            <img class="card-img-right flex-auto d-none d-md-block" src="media/{{ new.image }}" alt="Card image cap">#}
