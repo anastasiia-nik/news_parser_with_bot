@@ -18,6 +18,10 @@ h1, h2, h3, h4, h5, h6 {
   font-family: "Playfair Display", Georgia, "Times New Roman", serif;
 }
 
+form label {
+  display: block;
+}
+
 .display-4 {
   font-size: 2.5rem;
 }
@@ -117,6 +121,9 @@ h1, h2, h3, h4, h5, h6 {
   color: #999;
 }
 
+.comments-block {
+  padding-left: 2rem;
+}
 /*
  * Footer
  */
