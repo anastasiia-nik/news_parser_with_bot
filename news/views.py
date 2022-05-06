@@ -56,11 +56,6 @@ def show_article(request, article_name=None):
     return render(request, 'article_view.html', context=context)
 
 
-def add_comment(request, article_id):
-    try:
-        article = News.objects.get(id=article_id)
-    except:
-        raise Http404('Article not found!')
 
 
 def tag(request, tag_name=None):
