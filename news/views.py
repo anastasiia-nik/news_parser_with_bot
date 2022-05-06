@@ -1,6 +1,7 @@
 from django.http import Http404
 from django.shortcuts import render
 
+from news.forms import CommentForm
 from news.models import Category, News, Tags
 
 # Create your views here.
@@ -27,7 +28,8 @@ def category(request, cat_name=None):
 def show_article(request, article_name=None):
     try:
         article = News.objects.get(title=article_name)
-        context = {'article': article}
+        form = CommentForm()
+        context = {'article': article, 'form':form}
     except News.DoesNotExist:
         raise Http404("Article does not exist")
     return render(request, 'new_view.html', context=context)

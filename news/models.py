@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db import models
 
 
@@ -45,3 +47,11 @@ class News(models.Model):
 
     def __str__(self):
         return f'{self.title}'
+
+
+class Comment(models.Model):
+    author = models.CharField(max_length=150)
+    text = models.TextField()
+    date = models.DateTimeField(default=datetime.now)
+    news_id = models.ForeignKey(News, on_delete=models.CASCADE)
+    approved = models.BooleanField(default=False)
