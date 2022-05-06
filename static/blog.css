@@ -137,3 +137,16 @@ form label {
 .blog-footer p:last-child {
   margin-bottom: 0;
 }
+
+.post-image {
+    width: 40%;
+    height: auto;
+    float: left;
+    margin-right: 1rem;
+}
+
+@media (min-width: 1200px) {
+  .h3, h3 {
+    font-size: 1.25rem;
+  }
+}
