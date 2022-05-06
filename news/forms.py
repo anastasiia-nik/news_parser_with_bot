@@ -9,7 +9,7 @@ class SampleForm(forms.Form):
     text = forms.CharField(max_length=100)
 
 class CommentForm(forms.ModelForm):
-    captcha = ReCaptchaField(widget=ReCaptchaV3)
+    captcha = ReCaptchaField()
     class Meta:
         model = Comment
         fields = ('author', 'text')
