@@ -46,7 +46,6 @@ class News(models.Model):
     tags = models.ManyToManyField(Tags, blank=True)
     image = models.ImageField(upload_to='news/images/', blank=True, null=True)
 
-
     def __str__(self):
         return f'{self.title}'
 
@@ -54,6 +53,10 @@ class News(models.Model):
     def comment_counter(self):
         one_news = News.objects.get(id=self.id)
         return one_news.comments.filter(approved=True).count()
+
+    @property
+    def public_comments(self):
+        return self.comments.filter(approved=True)
 
 
 class Comment(models.Model):
@@ -65,8 +68,12 @@ class Comment(models.Model):
 
     class Meta:
         ordering = ['-date']
+        unique_together = (('author', 'text'), )
+
 
     def __str__(self):
         return 'Comment {} by {}'.format(self.text, self.author)
 
-
+    @classmethod
+    def last_comments(cls):
+        return cls.objects.filter(approved=True).order_by('-date')[:5]

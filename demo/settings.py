@@ -117,7 +117,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'uk-UA'
 
 TIME_ZONE = 'UTC'
 
@@ -142,3 +142,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 RECAPTCHA_PUBLIC_KEY = '6LfgYM0fAAAAAMRbMQdNwX7rylRtuiO8pSUSFMfs'
 RECAPTCHA_PRIVATE_KEY = '6LfgYM0fAAAAAGgHnFsB2yofGcP8CRcLtFtwTJs2'
 RECAPTCHA_REQUIRED_SCORE = 0.85
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6388/1',
+    }
+}
+
+CELERY_BROKER_URL = 'redis://127.0.0.1:6388/0'

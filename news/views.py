@@ -1,11 +1,14 @@
-from django.http import Http404, HttpResponseRedirect
-from django.shortcuts import render
+from functools import wraps
 
-from news.forms import CommentForm
+from django.http import Http404, JsonResponse
+from django.shortcuts import render, get_object_or_404
+
+from news.forms import CommentForm, Comment2Form
 from news.models import Category, News, Tags
-
-
 # Create your views here.
+from news.tasks import store_comment
+
+
 def main_page(request):
     news_list = News.objects.all().order_by('-id')
     context = {'news_list': news_list, 'top_news': news_list.first()}
@@ -25,33 +28,44 @@ def category(request, cat_name=None):
         context = {'news_in_cat': news_in_cat}
     except Category.DoesNotExist:
         raise Http404("Category does not exist")
+    return JsonResponse({
+        'success': True, 'data': ['123', '4232']
+    })
+    return JsonResponse({
+        'status': True, 'data': ['123', '4232']
+    })
+    return JsonResponse({
+        'success': 'ok', 'data': ['123', '4232']
+    })
     return render(request, 'category.html', context=context)
 
 
 def show_article(request, article_name=None):
-    try:
-        article = News.objects.get(title=article_name)
-        comments = article.comments.filter(approved=True)
-        new_comment = None
+    article = get_object_or_404(News, title=article_name)
+    new_comment = None
 
-        if request.method == 'POST':
-            comment_form = CommentForm(data=request.POST)
-            if comment_form.is_valid():
-                new_comment = comment_form.save(commit=False)
-                new_comment.news_id = article
-                new_comment.save()
+    if request.method == 'POST':
+        comment_form = Comment2Form(data=request.POST, context={'request': request, 'article': article})
+        if comment_form.is_valid():
+            data = comment_form.cleaned_data
+            store_comment.delay(
+                data['author'], data['text'], article.pk
+            )
+            new_comment = True
+            # new_comment = comment_form.save(commit=False)
+            # new_comment.news_id = article
+            # new_comment.save()
         else:
-            comment_form = CommentForm()
+            print(comment_form.errors)
+    else:
+        comment_form = CommentForm()
 
-        context = {
-            'article': article,
-            'comments': comments,
-            'new_comment': new_comment,
-            'comment_form': comment_form
-        }
-
-    except News.DoesNotExist:
-        raise Http404("Article does not exist")
+    context = {
+        'article': article,
+        'comments': article.public_comments,
+        'new_comment': new_comment,
+        'comment_form': comment_form
+    }
 
     return render(request, 'article_view.html', context=context)
 
