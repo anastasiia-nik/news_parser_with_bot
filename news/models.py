@@ -1,5 +1,7 @@
 from datetime import datetime
-
+from django.db.models.signals import post_save, pre_save
+from django.dispatch import receiver
+from django.core.cache import cache
 from django.db import models
 from django.core.validators import MinLengthValidator
 
@@ -38,6 +40,8 @@ class Tags(models.Model):
 
 
 class News(models.Model):
+    cache_comment_timeout_sec = 3600
+
     title = models.CharField(max_length=500)
     date = models.DateTimeField(blank=True, null=True)
     text = models.TextField()
@@ -51,8 +55,20 @@ class News(models.Model):
 
     @property
     def comment_counter(self):
+        cache_key = self.comment_counter_cache_key(self.pk)
+        data = cache.get(cache_key)
+        if data is not None:
+
+            return data
+        print(f"{cache_key} store for {self.pk}")
         one_news = News.objects.get(id=self.id)
-        return one_news.comments.filter(approved=True).count()
+        data = one_news.comments.filter(approved=True).count()
+        cache.set(cache_key, data, self.cache_comment_timeout_sec)
+        return data
+
+    @classmethod
+    def comment_counter_cache_key(cls, news_id):
+        return f"{news_id}_cache_comment"
 
     @property
     def public_comments(self):
@@ -68,12 +84,24 @@ class Comment(models.Model):
 
     class Meta:
         ordering = ['-date']
-        unique_together = (('author', 'text'), )
-
+        unique_together = (('author', 'text'),)
 
     def __str__(self):
         return 'Comment {} by {}'.format(self.text, self.author)
 
+    def save(
+        self, force_insert=False, force_update=False, using=None, update_fields=None
+    ):
+
+        return super().save(force_insert=False, force_update=False, using=None, update_fields=None)
+
     @classmethod
     def last_comments(cls):
         return cls.objects.filter(approved=True).order_by('-date')[:5]
+
+
+@receiver(post_save, sender=Comment)
+def post_save_handler(sender,instance=None, created=False, **kwargs):
+    instance: Comment
+    cache_key = News.comment_counter_cache_key(instance.id)
+    cache.delete(cache_key)

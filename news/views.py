@@ -1,5 +1,5 @@
 from functools import wraps
-
+from django.core.cache import cache
 from django.http import Http404, JsonResponse
 from django.shortcuts import render, get_object_or_404
 
