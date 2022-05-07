@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand, CommandError
 from dotenv import load_dotenv
 
 
-from news.models import Category
+from news.models import Category, TelegaSubscr
 
 import os
 import telebot
@@ -12,6 +12,10 @@ load_dotenv()
 bot = telebot.TeleBot(os.getenv('TELEGRAM_TOKEN'))
 
 @bot.message_handler(commands=['start', 'help'])
+def send_welcome(message: telebot.types.Message):
+    bot.send_message(message.chat.id, "Hi!")
+
+@bot.message_handler(commands=['subscribe'])
 def send_welcome(message: telebot.types.Message):
     bot.send_message(message.chat.id, "Hi!")
 

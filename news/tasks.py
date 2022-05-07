@@ -4,6 +4,7 @@ import traceback
 from django.db import IntegrityError
 
 from demo.celery import app
+from news.management.commands.telegrambot import bot
 from news.models import Comment
 
 logger = logging.getLogger()
@@ -30,3 +31,4 @@ def store_comment(author, text, news_id):
 @app.task()
 def store_statistic():
     logger.info("all ok")
+    # bot.send_message(message.chat.id, "Hi!")

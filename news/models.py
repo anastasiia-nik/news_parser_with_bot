@@ -58,7 +58,6 @@ class News(models.Model):
         cache_key = self.comment_counter_cache_key(self.pk)
         data = cache.get(cache_key)
         if data is not None:
-
             return data
         print(f"{cache_key} store for {self.pk}")
         one_news = News.objects.get(id=self.id)
@@ -89,19 +88,17 @@ class Comment(models.Model):
     def __str__(self):
         return 'Comment {} by {}'.format(self.text, self.author)
 
-    def save(
-        self, force_insert=False, force_update=False, using=None, update_fields=None
-    ):
-
-        return super().save(force_insert=False, force_update=False, using=None, update_fields=None)
-
     @classmethod
     def last_comments(cls):
         return cls.objects.filter(approved=True).order_by('-date')[:5]
 
 
+class TelegaSubscr(models.Model):
+    chat_id = models.CharField(max_length=100)
+
+
 @receiver(post_save, sender=Comment)
-def post_save_handler(sender,instance=None, created=False, **kwargs):
+def post_save_handler(sender, instance=None, created=False, **kwargs):
     instance: Comment
     cache_key = News.comment_counter_cache_key(instance.id)
     cache.delete(cache_key)
