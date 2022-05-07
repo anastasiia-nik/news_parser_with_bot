@@ -10,5 +10,8 @@ requests==2.27.1
 bs4==0.0.1
 lxml==4.8.0
 django-recaptcha
-celery
+celery~=5.2.6
 beautifulsoup4~=4.11.1
+redis
+
+stateful-object~=0.1
