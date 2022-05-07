@@ -18,6 +18,10 @@ h1, h2, h3, h4, h5, h6 {
   font-family: "Playfair Display", Georgia, "Times New Roman", serif;
 }
 
+form label {
+  display: block;
+}
+
 .display-4 {
   font-size: 2.5rem;
 }
@@ -117,6 +121,9 @@ h1, h2, h3, h4, h5, h6 {
   color: #999;
 }
 
+.comments-block {
+  padding-left: 2rem;
+}
 /*
  * Footer
  */
@@ -129,4 +136,17 @@ h1, h2, h3, h4, h5, h6 {
 }
 .blog-footer p:last-child {
   margin-bottom: 0;
+}
+
+.post-image {
+    width: 40%;
+    height: auto;
+    float: left;
+    margin-right: 1rem;
+}
+
+@media (min-width: 1200px) {
+  .h3, h3 {
+    font-size: 1.25rem;
+  }
 }

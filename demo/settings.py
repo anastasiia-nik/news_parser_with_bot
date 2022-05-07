@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'news'
+    'news',
+    'captcha'
 ]
 
 MIDDLEWARE = [
@@ -137,3 +138,7 @@ STATICFILES_DIRS = [path.join(BASE_DIR, 'static'), ]
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+RECAPTCHA_PUBLIC_KEY = '6LfgYM0fAAAAAMRbMQdNwX7rylRtuiO8pSUSFMfs'
+RECAPTCHA_PRIVATE_KEY = '6LfgYM0fAAAAAGgHnFsB2yofGcP8CRcLtFtwTJs2'
+RECAPTCHA_REQUIRED_SCORE = 0.85

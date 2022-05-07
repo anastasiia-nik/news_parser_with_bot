@@ -1,24 +1,18 @@
+from .models import Comment
 from django import forms
-from django.core.exceptions import ValidationError
+from captcha.fields import ReCaptchaField
+from captcha.widgets import ReCaptchaV3
 
-from news.models import Subscribers
 
+class SampleForm(forms.Form):
+    text = forms.CharField(max_length=100)
 
-class SubscribeForm(forms.ModelForm):
+class CommentForm(forms.ModelForm):
+    captcha = ReCaptchaField()
     class Meta:
-        model = Subscribers
-        fields = ['email', ]
+        model = Comment
+        fields = ('author', 'text')
+        # exclude = ['date', 'news_id', 'approved']
+        # captcha = ReCaptchaField()
 
 
-class ContactForm(forms.Form):
-    name = forms.CharField(min_length=1, max_length=10)
-    email = forms.EmailField()
-    msg = forms.CharField()
-
-    def clean_msg(self):
-        data = self.cleaned_data['msg']
-        print(data)
-        raise ValidationError("msg has no valid words")
-
-    def clean(self):
-        data = self.cleaned_data

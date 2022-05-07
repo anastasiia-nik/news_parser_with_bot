@@ -1,4 +1,7 @@
+from datetime import datetime
+
 from django.db import models
+from django.core.validators import MinLengthValidator
 
 
 class Author(models.Model):
@@ -43,10 +46,27 @@ class News(models.Model):
     tags = models.ManyToManyField(Tags, blank=True)
     image = models.ImageField(upload_to='news/images/', blank=True, null=True)
 
+
     def __str__(self):
         return f'{self.title}'
 
+    @property
+    def comment_counter(self):
+        one_news = News.objects.get(id=self.id)
+        return one_news.comments.filter(approved=True).count()
 
-class Subscribers(models.Model):
-    email = models.EmailField(unique=True)
-    last_news_id = models.IntegerField(default=0)
+
+class Comment(models.Model):
+    author = models.CharField(max_length=150, validators=[MinLengthValidator(2)])
+    text = models.TextField()
+    date = models.DateTimeField(auto_now_add=True)
+    news_id = models.ForeignKey(News, on_delete=models.CASCADE, related_name='comments')
+    approved = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ['-date']
+
+    def __str__(self):
+        return 'Comment {} by {}'.format(self.text, self.author)
+
+
