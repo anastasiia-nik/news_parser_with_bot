@@ -23,3 +23,4 @@ class NewsExternal():
     news_text: str
     news_photo: str
     news_tags: [str]
+    news_link: str

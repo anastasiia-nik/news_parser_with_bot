@@ -49,6 +49,7 @@ class News(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE, null=True, blank=True)
     tags = models.ManyToManyField(Tags, blank=True)
     image = models.ImageField(upload_to='news/images/', blank=True, null=True)
+    link = models.URLField(null=True, blank=True)
 
     def __str__(self):
         return f'{self.title}'

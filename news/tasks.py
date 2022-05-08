@@ -5,6 +5,7 @@ from django.db import IntegrityError
 
 from demo.celery import app
 from news.models import Comment
+from news.parsers.apply_pars import apply_pars
 
 logger = logging.getLogger()
 
@@ -30,3 +31,8 @@ def store_comment(author, text, news_id):
 @app.task()
 def store_statistic():
     logger.info("all ok")
+
+
+@app.task()
+def update_news_base():
+    apply_pars()

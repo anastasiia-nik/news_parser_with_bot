@@ -1,15 +1,18 @@
+from django.core.management.base import BaseCommand, CommandError
+from dotenv import load_dotenv
+
+
+from news.models import Category
+
 import os
 import telebot
-from django.core.management import BaseCommand
 
-from news.management.commands.states.base import BaseState
-from news.management.commands.states.hello import Hello
-
-from dotenv import load_dotenv
+from telegram_bot.states.base import BaseState
+from telegram_bot.states.hello import Hello
 
 load_dotenv()
 
-bot = telebot.TeleBot(os.getenv('TELEGRAM_SECRET'))
+bot = telebot.TeleBot(os.getenv('TELEGRAM_TOKEN'))
 clients: dict = {}
 
 
@@ -45,11 +48,3 @@ def get_state(chat_id) -> BaseState:
     current_state = clients.get(chat_id, Hello)
     examples_of_class = current_state(bot, chat_id)
     return examples_of_class
-
-
-class Command(BaseCommand):
-
-    def handle(self, *args, **options):
-        # app.start_pooling()
-        # print(os.getenv('TELEGRAM_TOKEN'))
-        bot.infinity_polling()

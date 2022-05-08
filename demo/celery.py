@@ -30,12 +30,20 @@ def debug_task(self):
 #     },
 # }
 
+# app.conf.beat_schedule = {
+#     # Executes every Monday morning at 7:30 a.m.
+#     'add-every-monday-morning': {
+#         'task': 'news.tasks.update_news_base',
+#         'schedule': crontab(hour=10, minute=5,),
+#         'args': (),
+#     },
+# }
+
 app.conf.beat_schedule = {
     # Executes every Monday morning at 7:30 a.m.
     'add-every-monday-morning': {
-        'task': 'news.tasks.store_statistic',
-        'schedule': crontab(hour=10, minute=5,),
-        'args': (),
+        'task': 'news.tasks.update_news_base',
+        'schedule': 60.0,
     },
 }
 
