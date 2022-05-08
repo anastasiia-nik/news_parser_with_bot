@@ -35,4 +35,5 @@ def store_statistic():
 
 @app.task()
 def update_news_base():
-    apply_pars()
+    msg = apply_pars()
+    logger.info(msg)

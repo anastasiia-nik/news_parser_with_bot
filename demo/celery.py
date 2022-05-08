@@ -24,8 +24,8 @@ def debug_task(self):
 
 app.conf.beat_schedule = {
     'add-every-15-seconds': {
-        'task': 'news.tasks.store_statistic',
-        'schedule': 15.0,
+        'task': 'news.tasks.update_news_base',
+        'schedule': 60.0,
         'args': ()
     },
 }

@@ -14,6 +14,8 @@ def apply_pars():
     # print(f'collected {len(upravda.all_news)} news')
     logger = logging.getLogger()
     logger.info(f'collected {len(upravda.all_news)} news')
+    return f'collected {len(upravda.all_news)} news'
+
 
 
 def add_authors(parser: pu.Upravda):
