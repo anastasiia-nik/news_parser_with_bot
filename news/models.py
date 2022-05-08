@@ -106,3 +106,9 @@ def post_save_handler(sender,instance=None, created=False, **kwargs):
     instance: Comment
     cache_key = News.comment_counter_cache_key(instance.id)
     cache.delete(cache_key)
+
+
+class Subscriber(models.Model):
+    chat_id = models.CharField(unique=True, max_length=150)
+
+
