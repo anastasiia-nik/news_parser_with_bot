@@ -37,3 +37,6 @@ def store_statistic():
 def update_news_base():
     msg = apply_pars()
     logger.info(msg)
+
+
+

@@ -112,3 +112,10 @@ class Subscriber(models.Model):
     chat_id = models.CharField(unique=True, max_length=150)
 
 
+class LastSendedNews(models.Model):
+    news_id = models.IntegerField(unique=True)
+    # last_news_id = News.objects.latest('id').id
+
+
+
+

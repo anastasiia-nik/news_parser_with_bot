@@ -16,6 +16,7 @@ bot = telebot.TeleBot(os.getenv('TELEGRAM_TOKEN'))
 clients: dict = {}
 
 
+
 @bot.message_handler(commands=['start', 'help'])
 def send_welcome(message: telebot.types.Message):
     bot_new = Hello(bot, message.chat.id)
