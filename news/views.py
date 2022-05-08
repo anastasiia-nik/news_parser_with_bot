@@ -10,7 +10,7 @@ from news.tasks import store_comment
 
 
 def main_page(request):
-    news_list = News.objects.all().order_by('-id')
+    news_list = News.objects.all().order_by('-date')
     context = {'news_list': news_list, 'top_news': news_list.first()}
     return render(request, 'new_index.html', context=context)
 

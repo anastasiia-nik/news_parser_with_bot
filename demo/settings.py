@@ -150,5 +150,5 @@ CACHES = {
     }
 }
 
-CELERY_BROKER_URL = 'redis://redis:6379/0'
+CELERY_BROKER_URL = 'redis://127.0.0.1:6388/0'
 VERSION = '0.0.1'
