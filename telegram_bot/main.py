@@ -23,6 +23,11 @@ def send_welcome(message: telebot.types.Message):
     bot_new.display()
     clients[message.chat.id] = Hello
 
+@bot.message_handler(commands=['cancel'])
+def send_welcome(message: telebot.types.Message):
+    bot_new = Hello(bot, message.chat.id)
+    bot_new.display()
+    clients[message.chat.id] = Hello
 
 @bot.callback_query_handler(func=lambda message: True)
 def process_call_back(message):

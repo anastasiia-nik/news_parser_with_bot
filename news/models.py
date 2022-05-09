@@ -35,6 +35,15 @@ class Tags(models.Model):
     def counter(self):
         return News.objects.filter(tags=self).count()
 
+    # @classmethod
+    # def get_popular_tags(cls):
+    #     tag_dict = {}
+    #     for tag in cls.objects.all():
+    #         tag_dict[tag] = News.objects.filter(tags=tag).count()
+    #     tag_dict_sorted = {dict(sorted(tag_dict.items(), key=lambda item: item[1]))}
+    #     list_tag = [tag_dict_sorted[i] for i in range(0,10)]
+    #     print(list_tag)
+
     def __str__(self):
         return self.tag
 

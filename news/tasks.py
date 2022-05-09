@@ -1,18 +1,21 @@
 import logging
 import traceback
+from datetime import datetime
 
 from django.db import IntegrityError
+from django.urls import reverse
 
 from demo.celery import app
-from news.models import Comment
+from news.models import Comment, Tags, Subscriber, News, LastSendedNews
 from news.parsers.apply_pars import apply_pars
+from telegram_bot import main
 
 logger = logging.getLogger()
+
 
 @app.task()
 def math(a, b):
     return a + b
-
 
 
 @app.task()
@@ -36,7 +39,23 @@ def store_statistic():
 @app.task()
 def update_news_base():
     msg = apply_pars()
-    logger.info(msg)
+    logger.info(f'collected {msg} news')
+    last_news_sent = LastSendedNews.objects.get(id=1)
+    # last_news_date = News.objects.get(id=last_news_id).date
 
 
+    # if msg > 0:
+    subscribers = Subscriber.objects.all()
+    # last_news = News.objects.filter(date__gt=last_news_date).values('link')
+    last_news = News.objects.filter(id__gt=last_news_sent.news_id).values('title')
+    last_news_sent.news_id = News.objects.latest('id').id
+    last_news_sent.save()
 
+
+    for link in last_news:
+        for subscriber in subscribers:
+            send_news_to_subscriber.delay(subscriber.chat_id, reverse('article_name', args=(link["title"],)))
+
+@app.task()
+def send_news_to_subscriber(chat_id, msg):
+    main.bot.send_message(chat_id, msg)
