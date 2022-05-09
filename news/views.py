@@ -40,8 +40,8 @@ def category(request, cat_name=None):
     return render(request, 'category.html', context=context)
 
 
-def show_article(request, article_name=None):
-    article = get_object_or_404(News, title=article_name)
+def show_article(request, slug=None):
+    article = get_object_or_404(News, slug=slug)
     new_comment = None
 
     if request.method == 'POST':

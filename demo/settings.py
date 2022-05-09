@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'news',
-    'captcha'
+    'captcha',
+
 ]
 
 MIDDLEWARE = [
@@ -71,6 +72,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'news.context.all_categories',
                 'news.context.all_tags',
+                'django.core.context_processors.request'
             ],
         },
     },

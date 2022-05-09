@@ -4,6 +4,7 @@ from django.dispatch import receiver
 from django.core.cache import cache
 from django.db import models
 from django.core.validators import MinLengthValidator
+from pytils.translit import slugify
 
 
 class Author(models.Model):
@@ -59,6 +60,7 @@ class News(models.Model):
     tags = models.ManyToManyField(Tags, blank=True)
     image = models.ImageField(upload_to='news/images/', blank=True, null=True)
     link = models.URLField(null=True, blank=True)
+    slug = models.SlugField(max_length=255, unique=True)
 
     def __str__(self):
         return f'{self.title}'
@@ -83,6 +85,11 @@ class News(models.Model):
     @property
     def public_comments(self):
         return self.comments.filter(approved=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super(News, self).save(*args, **kwargs)
 
 
 class Comment(models.Model):
