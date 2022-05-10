@@ -13,7 +13,7 @@ class Hello(BaseState):
         self.bot.send_message(self.chat_id, last_news)
 
     def process_call_back(self, message: types.CallbackQuery) -> 'BaseState':
-        if message.data and message.data == 'nextstate:ActionState':
+        if message.data and message.data == 'nextstate:SubscribedState':
             self.save_subscribe()
             return SubscribedState
         return Hello
@@ -21,7 +21,7 @@ class Hello(BaseState):
     def get_keyboard(self):
         keyboard = types.InlineKeyboardMarkup()
         keyboard.add(
-            types.InlineKeyboardButton(text='Пiдписатися на всi новини', callback_data='nextstate:ActionState'))
+            types.InlineKeyboardButton(text='Пiдписатися на всi новини', callback_data='nextstate:SubscribedState'))
         return keyboard
 
 class SubscribedState(BaseState):

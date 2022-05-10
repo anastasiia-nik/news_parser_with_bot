@@ -3,6 +3,8 @@ from celery.schedules import crontab
 from celery import Celery
 
 # Set the default Django settings module for the 'celery' program.
+from celery.signals import worker_ready
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'demo.settings')
 
 app = Celery('demo')
@@ -15,6 +17,12 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 
 # Load task modules from all registered Django apps.
 app.autodiscover_tasks()
+
+# @worker_ready.connect
+# def at_start(sender, **k):
+#     with sender.app.connection() as conn:
+#          sender.app.send_task('news.tasks.start_bot',connection=conn)
+
 
 
 @app.task(bind=True)
