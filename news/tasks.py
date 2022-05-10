@@ -62,3 +62,8 @@ def update_news_base():
 @app.task()
 def send_news_to_subscriber(chat_id, msg):
     main.bot.send_message(chat_id, msg)
+
+
+@app.task()
+def start_bot():
+    main.bot.infinity_polling()
