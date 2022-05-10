@@ -42,9 +42,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'news',
+
+    'rest_framework',
     'captcha',
 
+    'news',
 ]
 
 MIDDLEWARE = [
@@ -154,3 +156,12 @@ CACHES = {
 CELERY_BROKER_URL = 'redis://127.0.0.1:6389/0'
 # CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'
 VERSION = '0.0.1'
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ],
+"DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+}
