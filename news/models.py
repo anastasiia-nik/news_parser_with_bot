@@ -4,6 +4,7 @@ from django.dispatch import receiver
 from django.core.cache import cache
 from django.db import models
 from django.core.validators import MinLengthValidator
+from pytils.translit import slugify
 
 
 class Author(models.Model):
@@ -35,6 +36,15 @@ class Tags(models.Model):
     def counter(self):
         return News.objects.filter(tags=self).count()
 
+    # @classmethod
+    # def get_popular_tags(cls):
+    #     tag_dict = {}
+    #     for tag in cls.objects.all():
+    #         tag_dict[tag] = News.objects.filter(tags=tag).count()
+    #     tag_dict_sorted = {dict(sorted(tag_dict.items(), key=lambda item: item[1]))}
+    #     list_tag = [tag_dict_sorted[i] for i in range(0,10)]
+    #     print(list_tag)
+
     def __str__(self):
         return self.tag
 
@@ -49,6 +59,8 @@ class News(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE, null=True, blank=True)
     tags = models.ManyToManyField(Tags, blank=True)
     image = models.ImageField(upload_to='news/images/', blank=True, null=True)
+    link = models.URLField(null=True, blank=True)
+    slug = models.SlugField(max_length=255, unique=True, blank=True, null=True)
 
     def __str__(self):
         return f'{self.title}'
@@ -72,6 +84,11 @@ class News(models.Model):
     @property
     def public_comments(self):
         return self.comments.filter(approved=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super(News, self).save(*args, **kwargs)
 
 
 class Comment(models.Model):
@@ -102,3 +119,16 @@ def post_save_handler(sender, instance=None, created=False, **kwargs):
     instance: Comment
     cache_key = News.comment_counter_cache_key(instance.id)
     cache.delete(cache_key)
+
+
+class Subscriber(models.Model):
+    chat_id = models.CharField(unique=True, max_length=150)
+
+
+class LastSendedNews(models.Model):
+    news_id = models.IntegerField(unique=True)
+    # last_news_id = News.objects.latest('id').id
+
+
+
+

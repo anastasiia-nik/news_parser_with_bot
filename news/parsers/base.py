@@ -8,7 +8,8 @@ from news.models import News
 class NewsParser(ABC):
 
     @abstractmethod
-    def last_news(self) -> list[News]:
+    def last_news(self):
+        pass
         '''
         n = News()
         n.save()
@@ -23,3 +24,4 @@ class NewsExternal():
     news_text: str
     news_photo: str
     news_tags: [str]
+    news_link: str

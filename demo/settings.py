@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-3&7(i_a5)1r^7%m5@qw=45^8((jyx3r5r2c!zn8w10m5(q)8=0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['django.py-beetroot.ml', '127.0.0.1']
+ALLOWED_HOSTS = ['django.py-beetroot.ml', '127.0.0.1', '0.0.0.0']
 # ALLOWED_HOSTS = []
 
 
@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'news',
-    'captcha'
+    'captcha',
+
 ]
 
 MIDDLEWARE = [
@@ -146,9 +147,10 @@ RECAPTCHA_REQUIRED_SCORE = 0.85
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.redis.RedisCache',
-        'LOCATION': 'redis://127.0.0.1:6388/1',
+        'LOCATION': 'redis://127.0.0.1:6389/1',
     }
 }
 
-CELERY_BROKER_URL = 'redis://127.0.0.1:6388/0'
+CELERY_BROKER_URL = 'redis://127.0.0.1:6389/0'
+# CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'
 VERSION = '0.0.1'

@@ -4,11 +4,15 @@ Pillow
 django-extensions
 psycopg2-binary
 gunicorn
-pyTelegramBotAPI==4.5.0
+pyTelegramBotAPI==4.5.1
 python-dotenv~=0.20.0
 requests==2.27.1
 bs4==0.0.1
 lxml==4.8.0
 django-recaptcha
-celery
+celery~=5.2.6
 beautifulsoup4~=4.11.1
+pytils
+
+stateful-object~=0.1
+redis==4.3.1

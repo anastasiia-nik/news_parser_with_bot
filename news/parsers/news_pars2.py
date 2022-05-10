@@ -8,6 +8,7 @@ import requests
 # from base import NewsParser
 from bs4 import BeautifulSoup
 
+from news.models import News
 from news.parsers.base import NewsExternal
 
 
@@ -28,7 +29,17 @@ class Upravda():
             temp_link = news.find('a').attrs['href']
             if 'https' not in temp_link:
                 news_list.append('https://www.pravda.com.ua' + temp_link)
-        self.list_all_news_links = news_list
+        self.list_all_news_links = self.filter_duplicate_links(news_list)
+
+
+    def filter_duplicate_links(self, link_list):
+        temp_list = []
+        for link in link_list:
+            if News.objects.filter(link=link).exists():
+                continue
+            temp_list.append(link)
+        return temp_list
+
 
     def convert_data(self, data: str):
         dict_month = {'січня': 1,
@@ -81,7 +92,8 @@ class Upravda():
                                 news_data=news_data,
                                 news_text=news_text,
                                 news_photo=news_photo,
-                                news_tags=news_tags)
+                                news_tags=news_tags,
+                                news_link=link)
         # print(one_news)
         # self.all_news.append(one_news)
         # print(self.all_news[-1])
@@ -89,11 +101,14 @@ class Upravda():
 
     def parse_all(self):
         self.collect_all_news()
+        if self.list_all_news_links:
+            self.all_news = self.grabber(self.list_all_news_links, self.parse_one)
+
 
         # for link in self.list_all_news_links:
         #     self.parse_one(link=link)
         # self.parse_one(self.list_all_news_links[0])
-        self.all_news = self.grabber(self.list_all_news_links, self.parse_one)
+
 
     # # temp = Upravda()
     # # temp.collect_all_news()

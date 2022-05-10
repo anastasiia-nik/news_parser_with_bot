@@ -22,21 +22,29 @@ def debug_task(self):
     print(f'Request: {self.request!r}')
 
 
+app.conf.beat_schedule = {
+    'add-every-15-seconds': {
+        'task': 'news.tasks.update_news_base',
+        'schedule': 60.0,
+        'args': ()
+    },
+}
+
 # app.conf.beat_schedule = {
-#     'add-every-30-seconds': {
-#         'task': 'news.tasks.store_statistic',
-#         'schedule': 30.0,
-#         'args': ()
+#     # Executes every Monday morning at 7:30 a.m.
+#     'add-every-monday-morning': {
+#         'task': 'news.tasks.update_news_base',
+#         'schedule': crontab(hour=10, minute=5,),
+#         'args': (),
 #     },
 # }
 
-app.conf.beat_schedule = {
-    # Executes every Monday morning at 7:30 a.m.
-    'add-every-monday-morning': {
-        'task': 'news.tasks.store_statistic',
-        'schedule': crontab(hour=10, minute=5,),
-        'args': (),
-    },
-}
+# app.conf.beat_schedule = {
+#     # Executes every Monday morning at 7:30 a.m.
+#     'add-every-monday-morning': {
+#         'task': 'news.tasks.update_news_base',
+#         'schedule': 60.0,
+#     },
+# }
 
 app.conf.timezone = 'UTC'

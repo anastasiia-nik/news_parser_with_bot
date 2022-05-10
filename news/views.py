@@ -10,7 +10,7 @@ from news.tasks import store_comment
 
 
 def main_page(request):
-    news_list = News.objects.all().order_by('-id')
+    news_list = News.objects.all().order_by('-date')
     context = {'news_list': news_list, 'top_news': news_list.first()}
     return render(request, 'new_index.html', context=context)
 
@@ -40,8 +40,8 @@ def category(request, cat_name=None):
     return render(request, 'category.html', context=context)
 
 
-def show_article(request, article_name=None):
-    article = get_object_or_404(News, title=article_name)
+def show_article(request, slug=None):
+    article = get_object_or_404(News, slug=slug)
     new_comment = None
 
     if request.method == 'POST':
