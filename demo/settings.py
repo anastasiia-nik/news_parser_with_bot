@@ -148,10 +148,10 @@ RECAPTCHA_REQUIRED_SCORE = 0.85
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.redis.RedisCache',
-        'LOCATION': 'redis://redis:6379/1',
+        'LOCATION': 'redis://127.0.0.1:6389/1',
     }
 }
 
-CELERY_BROKER_URL = 'redis://127.0.0.1:6388/0'
+CELERY_BROKER_URL = 'redis://127.0.0.1:6389/0'
 # CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'
 VERSION = '0.0.1'
