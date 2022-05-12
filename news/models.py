@@ -63,7 +63,7 @@ class News(models.Model):
     title = models.CharField(max_length=500)
     date = models.DateTimeField(blank=True, null=True)
     text = models.TextField()
-    category = models.ForeignKey(Category, on_delete=models.PROTECT)
+    category = models.ForeignKey(Category, on_delete=models.PROTECT, default=2)
     author = models.ForeignKey(Author, on_delete=models.CASCADE, null=True, blank=True)
     tags = models.ManyToManyField(Tags, blank=True)
     image = models.ImageField(upload_to='news/images/', blank=True, null=True)
@@ -72,6 +72,12 @@ class News(models.Model):
 
     def __str__(self):
         return f'{self.title}'
+
+    def save(self, *args, **kwargs):
+        # self.__class__.__name__   self.pk
+        # f""
+        return super().save(*args, **kwargs)
+
 
     @property
     def comment_counter(self):
@@ -95,16 +101,23 @@ class News(models.Model):
 
     @property
     def get_tags(self):
-        tags_list = self.tags.all()
-        return [tag.tag for tag in tags_list]
+        try:
+            tags_list = self.tags.all()
+            return [tag.tag for tag in tags_list]
+        except ValueError:
+            return []
 
     @property
     def get_category(self):
         return self.category.name
 
+
     @property
     def get_author(self):
-        return self.author.name
+        try:
+            return self.author.name
+        except AttributeError:
+            return ""
 
 
     def save(self, *args, **kwargs):

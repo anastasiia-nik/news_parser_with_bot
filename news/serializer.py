@@ -27,6 +27,10 @@ class NewsFullSerializer(serializers.ModelSerializer):
     def get_author(self, obj):
         return obj.get_author
 
+    def create(self, validated_data):
+        validated_data['category_id'] = 1
+        return News.objects.create(**validated_data)
+
     class Meta:
         model = News
         fields = '__all__'

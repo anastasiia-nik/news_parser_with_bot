@@ -3,7 +3,7 @@ from django.core.cache import cache
 from django.db.models import Q
 from django.http import Http404, JsonResponse
 from django.shortcuts import render, get_object_or_404
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
@@ -104,6 +104,9 @@ class NewsViewSet(viewsets.ModelViewSet):
     serializer_class = NewsShortSerializer
     # lookup_field = 'slug'
 
+    # def perform_create(self, serializer):
+    #     serializer.save()
+
     def get_queryset(self):
         print(self.request)
         if 'q' in self.request.GET:
@@ -118,7 +121,7 @@ class NewsViewSet(viewsets.ModelViewSet):
         return NewsFullSerializer
 
     # api/news/Zelensky/
-    @action(methods=['get'], detail=False, url_path=r'(?P<tagname>\w+)')
+    @action(methods=['get'], detail=False, url_path=r'tag/(?P<tagname>\w+)')
     def get_by_tag(self, request, pk=None, tagname=""):
         # tag = Tags.objects.filter(tag=tagname).first()
         tag = get_object_or_404(Tags, tag=tagname)
@@ -150,3 +153,6 @@ class TagsViewSet(viewsets.ModelViewSet):
     #     if self.action == 'list':
     #         return NewsShortSerializer
     #     return NewsFullSerializer
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+
