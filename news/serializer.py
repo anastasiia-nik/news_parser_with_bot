@@ -11,7 +11,7 @@ class NewsShortSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = News
-        fields = ['id', 'title', 'comments']
+        fields = ['id', 'title', 'comments', 'slug']
 
 class NewsFullSerializer(serializers.ModelSerializer):
     tags = serializers.SerializerMethodField()
@@ -31,15 +31,7 @@ class NewsFullSerializer(serializers.ModelSerializer):
         model = News
         fields = '__all__'
 
-# class TagSerializer(serializers.ModelSerializer):
-#     news = serializers.SerializerMethodField()
-#
-#     def get_news_id(self, obj):
-#         return obj.get_news_id
-#
-#     def get_tags_title(self, obj):
-#         return obj.get_news_title
-#
-#     class Meta:
-#         model = Tags
-#         fields = ['id', 'tag', 'news']
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tags
+        fields = ['id', 'tag',]

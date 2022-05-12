@@ -1,13 +1,16 @@
 from functools import wraps
 from django.core.cache import cache
+from django.db.models import Q
 from django.http import Http404, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 from news.forms import CommentForm, Comment2Form
 from news.models import Category, News, Tags
 # Create your views here.
-from news.serializer import NewsShortSerializer, NewsFullSerializer
+from news.serializer import NewsShortSerializer, NewsFullSerializer, TagSerializer
 from news.tasks import store_comment
 
 
@@ -92,18 +95,56 @@ def tag(request, tag_name=None):
     return render(request, 'tag.html', context=context)
 
 
+class IsAdminOrIsSelf:
+    pass
+
+
 class NewsViewSet(viewsets.ModelViewSet):
     queryset = News.objects.all()
     serializer_class = NewsShortSerializer
+    # lookup_field = 'slug'
+
+    def get_queryset(self):
+        print(self.request)
+        if 'q' in self.request.GET:
+            q = self.request.GET['q']
+            '''SELECT * from news WHERE title=123 OR text=123 ;'''
+            return News.objects.filter(Q(title__icontains=q) | Q(text__icontains=q))
+        return News.objects.all()
 
     def get_serializer_class(self):
         if self.action == 'list':
             return NewsShortSerializer
         return NewsFullSerializer
 
-# class TagsViewSet(viewsets.ModelViewSet):
-#     queryset = News.objects.filter()
-#     serializer_class = TagSerializer
+    # api/news/Zelensky/
+    @action(methods=['get'], detail=False, url_path=r'(?P<tagname>\w+)')
+    def get_by_tag(self, request, pk=None, tagname=""):
+        # tag = Tags.objects.filter(tag=tagname).first()
+        tag = get_object_or_404(Tags, tag=tagname)
+        queryset = News.objects.filter(tags=tag)
+        return self.__return_free_data(queryset, NewsShortSerializer)
+
+    def __return_free_data(self, queryset, serializer):
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = serializer(queryset, many=True)
+        return Response(serializer.data)
+
+    # api/car/<pk>/report/2020-01-28/2020-02-26/
+    @action(methods=['get'], detail=True, url_path=r'report/(?P<start_date>\w+)/(?P<end_date>\w+)',)
+    def car_crash(self, request, pk=None, start_date="", end_date=""):
+        # print(1)
+        # return self.__return_free_data(CarCrash.objects.filter(car_id=pk), CarCrashSerializer)
+        return Response()
+
+
+class TagsViewSet(viewsets.ModelViewSet):
+    queryset = Tags.objects.filter()
+    serializer_class = TagSerializer
 
     # def get_serializer_class(self):
     #     if self.action == 'list':
