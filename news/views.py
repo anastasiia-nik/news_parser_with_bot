@@ -100,3 +100,12 @@ class NewsViewSet(viewsets.ModelViewSet):
         if self.action == 'list':
             return NewsShortSerializer
         return NewsFullSerializer
+
+# class TagsViewSet(viewsets.ModelViewSet):
+#     queryset = News.objects.filter()
+#     serializer_class = TagSerializer
+
+    # def get_serializer_class(self):
+    #     if self.action == 'list':
+    #         return NewsShortSerializer
+    #     return NewsFullSerializer

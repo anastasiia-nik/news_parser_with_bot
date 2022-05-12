@@ -4,6 +4,7 @@ import news.parsers.news_pars2 as pu
 from django.core.management.base import BaseCommand, CommandError
 import news.models as nm
 
+logger = logging.getLogger()
 
 def apply_pars():
     upravda = pu.Upravda()
@@ -12,7 +13,6 @@ def apply_pars():
         add_tags(upravda)
         add_news(upravda)
     # print(f'collected {len(upravda.all_news)} news')
-    logger = logging.getLogger()
     logger.info(f'collected {len(upravda.all_news)} news')
     return len(upravda.all_news)
 

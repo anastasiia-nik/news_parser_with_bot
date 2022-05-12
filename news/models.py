@@ -36,6 +36,14 @@ class Tags(models.Model):
     def counter(self):
         return News.objects.filter(tags=self).count()
 
+    @property
+    def get_news_id(self):
+        return News.objects.filter(tags=self).id()
+
+    @property
+    def get_news_title(self):
+        return News.objects.filter(tags=self).title()
+
     # @classmethod
     # def get_popular_tags(cls):
     #     tag_dict = {}
@@ -84,6 +92,20 @@ class News(models.Model):
     @property
     def public_comments(self):
         return self.comments.filter(approved=True)
+
+    @property
+    def get_tags(self):
+        tags_list = self.tags.all()
+        return [tag.tag for tag in tags_list]
+
+    @property
+    def get_category(self):
+        return self.category.name
+
+    @property
+    def get_author(self):
+        return self.author.name
+
 
     def save(self, *args, **kwargs):
         if not self.slug:
