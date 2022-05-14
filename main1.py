@@ -9,10 +9,12 @@ class Email:
     text: str
     attach: list[str] = lambda: []
 
+
 class BaseObject:
     def __init__(self, email):
         self.email = email
-        self.weight=0
+        self.weight = 0
+
 
 class BaseWeight:
     def __init__(self, obj, weight=0):
@@ -31,6 +33,7 @@ class BaseWeight:
         self.myproperty = kwars
         return self
 
+
 class CheckSenders(BaseWeight):
 
     @property
@@ -40,6 +43,7 @@ class CheckSenders(BaseWeight):
             return self.obj.weight + self.rule_weight
         return self.obj.weight
 
+
 class CheckReceiver(BaseWeight):
     @property
     def weight(self):
@@ -47,10 +51,10 @@ class CheckReceiver(BaseWeight):
             return self.obj.weight + self.rule_weight
         return self.obj.weight
 
+
 email = Email(
     "qwe", "qwe", "qwe", "qwe",
 )
-
 
 start = BaseObject(email)
 
@@ -60,8 +64,6 @@ b3 = CheckReceiver(b2, 30)
 b3.set_property(**{'rcvrcount': 3})
 
 print(b3.weight)
-
-
 
 email2 = Email('qwe', "qwe,1,1,1,1,1,1,1,1,1,1", "3,3,3,3,3q,w,e,", "qwe", "fsdf")
 start.email = email2
